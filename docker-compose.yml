@@ -1,0 +1,101 @@
+version: '3'
+
+services:
+  ctf-gateway-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION:-8.10.0}
+    volumes:
+      # - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./elasticsearch/data/:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      DISCOVERY_TYPE: single-node
+      ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
+      KIBANA_PASSWORD: ${ELK_PASSWORD:-changeme}
+    networks:
+      - elk
+
+  ctf-gateway-logstash:
+    image: docker.elastic.co/logstash/logstash:${ELK_VERSION:-8.10.0}
+    depends_on:
+      - ctf-gateway-elasticsearch
+    volumes:
+      # - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5000:5000"
+      - "9600:9600"
+    expose: 
+      - "5044"
+    environment:
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
+      HTTP_HOST: "0.0.0.0"
+    networks:
+      - elk
+
+  ctf-gateway-kibana:
+    image: docker.elastic.co/kibana/kibana:${ELK_VERSION:-8.10.0}
+    depends_on:
+      - ctf-gateway-elasticsearch
+    # volumes:
+    #   - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "5601:5601"
+    environment:
+      SERVER_NAME: ctf-gateway-kibana
+      SERVER_HOST: "0"
+      ELASTICSEARCH_HOSTS: '["http://ctf-gateway-elasticsearch:9200"]'
+      ELASTICSEARCH_USERNAME: kibana_system
+      ELASTICSEARCH_PASSWORD: ${ELK_PASSWORD:-changeme}
+    networks:
+      - elk
+
+  # app:
+  #   build : ./app
+  #   volumes:
+  #     - ./app/:/usr/src/app
+  #     - /usr/src/app/node_modules/ # make node_module empty in container
+  #   command: npm start
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - elk
+
+  # nginx:
+  #   build: ./nginx
+  #   volumes:
+  #     - ./nginx/config:/etc/nginx/conf.d
+  #     - ./nginx/log:/var/log/nginx
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   links:
+  #     - app:app
+  #   depends_on: 
+  #     - app
+  #   networks:
+  #     - elk
+
+  # filebeat:
+  #   build: ./filebeat
+  #   entrypoint: "filebeat -e -strict.perms=false"
+  #   volumes:
+  #     - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml
+  #     - ./nginx/log:/var/log/nginx
+  #   networks:
+  #     - elk
+  #   depends_on: 
+  #     - app
+  #     - nginx
+  #     - logstash
+  #     - elasticsearch
+  #     - kibana
+  #   links: 
+  #     - logstash
+
+networks:
+  elk:
+    driver: bridge
