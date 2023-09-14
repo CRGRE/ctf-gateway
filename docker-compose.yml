@@ -10,7 +10,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx128m -Xms128m"
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       DISCOVERY_TYPE: single-node
       ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
       KIBANA_PASSWORD: ${ELK_PASSWORD:-changeme}
@@ -30,7 +30,7 @@ services:
     expose: 
       - "5044"
     environment:
-      LS_JAVA_OPTS: "-Xmx128m -Xms128m"
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
       ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
       HTTP_HOST: "0.0.0.0"
     networks:
