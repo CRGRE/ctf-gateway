@@ -26,25 +26,29 @@ services:
       timeout: 2s
       retries: 5
 
-  # ctf-gateway-logstash:
-  #   image: docker.elastic.co/logstash/logstash:${ELK_VERSION:-8.10.0}
-  #   depends_on:
-  #     ctf-gateway-elasticsearch:
-  #       condition: service_healthy
-  #   volumes:
-  #     # - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-  #     - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
-  #   ports:
-  #     - "5000:5000"
-  #     - "9600:9600"
-  #   expose: 
-  #     - "5044"
-  #   environment:
-  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-  #     ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
-  #     HTTP_HOST: "0.0.0.0"
-  #   networks:
-  #     - elk
+  ctf-gateway-logstash:
+    image: docker.elastic.co/logstash/logstash:${ELK_VERSION:-8.10.0}
+    depends_on:
+      ctf-gateway-elasticsearch:
+        condition: service_healthy
+    volumes:
+      # - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    # ports:
+    #   - "5000:5000"
+    #   - "9600:9600"
+    expose: 
+      - "5044"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
+      HTTP_HOST: "0.0.0.0"
+      XPACK_MONITORING_ENABLED: true
+      XPACK_MONITORING_ELASTICSEARCH_USERNAME: elastic
+      XPACK_MONITORING_ELASTICSEARCH_PASSWORD: ${ELK_PASSWORD:-changeme}
+    networks:
+      - elk
+    restart: always
 
   ctf-gateway-kibana:
     image: docker.elastic.co/kibana/kibana:${ELK_VERSION:-8.10.0}
