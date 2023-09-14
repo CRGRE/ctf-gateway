@@ -9,11 +9,12 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-      DISCOVERY_TYPE: single-node
-      ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
-      KIBANA_PASSWORD: ${ELK_PASSWORD:-changeme}
-      XPACK_SECURITY_ENABLED: "false"
+      - ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      - ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
+      - KIBANA_PASSWORD: ${ELK_PASSWORD:-changeme}
+      - discovery.type: single-node
+      - xpack.security.enabled: "false"
+      # - XPACK_SECURITY_TRANSPORT_SSL_ENABLED: "false"
     networks:
       - elk
 
