@@ -3,45 +3,53 @@ version: '3'
 services:
   ctf-gateway-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELK_VERSION:-8.10.0}
-    volumes:
-      - elasticsearch:/usr/share/elasticsearch/data
-    # ports:
-    #   - "9200:9200"
-    #   - "9300:9300"
+    expose:
+      - "9200"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
       KIBANA_PASSWORD: ${ELK_PASSWORD:-changeme}
-      "discovery.type": single-node
-      "xpack.security.enabled": "false"
+      discovery.type: single-node
+      xpack.security.enabled: "false"
     networks:
       - elk
-
-  ctf-gateway-logstash:
-    image: docker.elastic.co/logstash/logstash:${ELK_VERSION:-8.10.0}
-    depends_on:
-      - ctf-gateway-elasticsearch
     volumes:
-      # - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
-    ports:
-      - "5000:5000"
-      - "9600:9600"
-    expose: 
-      - "5044"
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-      ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
-      HTTP_HOST: "0.0.0.0"
-    networks:
-      - elk
+      - elasticsearch:/usr/share/elasticsearch/data
+    sysctls:
+      - vm.max_map_count=262144
+    restart: always
+    healthcheck:
+      start_period: 15s
+      test: ["CMD", "curl", "-f", "-u", "elastic:${ELK_PASSWORD:-changeme}", "-k", "http://localhost:9200"]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+
+  # ctf-gateway-logstash:
+  #   image: docker.elastic.co/logstash/logstash:${ELK_VERSION:-8.10.0}
+  #   depends_on:
+  #     ctf-gateway-elasticsearch:
+  #       condition: service_healthy
+  #   volumes:
+  #     # - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+  #     - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+  #   ports:
+  #     - "5000:5000"
+  #     - "9600:9600"
+  #   expose: 
+  #     - "5044"
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+  #     ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
+  #     HTTP_HOST: "0.0.0.0"
+  #   networks:
+  #     - elk
 
   ctf-gateway-kibana:
     image: docker.elastic.co/kibana/kibana:${ELK_VERSION:-8.10.0}
     depends_on:
-      - ctf-gateway-elasticsearch
-    # volumes:
-    #   - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+      ctf-gateway-elasticsearch:
+        condition: service_healthy
     ports:
       - "5601:5601"
     environment:
@@ -52,6 +60,9 @@ services:
       ELASTICSEARCH_PASSWORD: ${ELK_PASSWORD:-changeme}
     networks:
       - elk
+    # volumes:
+    #   - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    restart: always
 
   # app:
   #   build : ./app
