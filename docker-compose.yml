@@ -15,7 +15,7 @@ services:
       - elk
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
-    # use fix.sh
+    # # needs privileged, better use fix.sh
     # sysctls:
     #   - vm.max_map_count=262144
     restart: always
@@ -56,6 +56,7 @@ services:
     environment:
       SERVER_NAME: ctf-gateway-kibana
       SERVER_HOST: "0.0.0.0"
+      MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: true
       ELASTICSEARCH_HOSTS: '["http://ctf-gateway-elasticsearch:9200"]'
       ELASTICSEARCH_USERNAME: kibana_system
       ELASTICSEARCH_PASSWORD: ${ELK_PASSWORD:-changeme}
