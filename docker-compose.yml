@@ -48,6 +48,8 @@ services:
       XPACK_MONITORING_ELASTICSEARCH_PASSWORD: ${ELK_PASSWORD:-changeme}
     networks:
       - elk
+    links:
+     - "ctf-gateway-elasticsearch:elasticsearch"
     restart: always
 
   ctf-gateway-kibana:
