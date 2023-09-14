@@ -13,7 +13,7 @@ services:
       DISCOVERY_TYPE: single-node
       ELASTIC_PASSWORD: ${ELK_PASSWORD:-changeme}
       KIBANA_PASSWORD: ${ELK_PASSWORD:-changeme}
-      XPACK_SECURITY_HTTP_SSL_ENABLED: "false"
+      XPACK_SECURITY_ENABLED: "false"
     networks:
       - elk
 
