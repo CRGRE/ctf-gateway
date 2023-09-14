@@ -91,10 +91,10 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    links:
-      - app:app
-    depends_on: 
-      - app
+    # links:
+    #   - app:app
+    # depends_on: 
+    #   - app
     networks:
       - elk
 
@@ -106,14 +106,14 @@ services:
       - ./nginx/log:/var/log/nginx
     networks:
       - elk
-    depends_on: 
-      - app
-      - nginx
-      - logstash
-      - elasticsearch
-      - kibana
-    links: 
-      - logstash
+    # depends_on: 
+    #   - app
+    #   - nginx
+    #   - logstash
+    #   - elasticsearch
+    #   - kibana
+    # links: 
+    #   - logstash
 
 networks:
   elk:
