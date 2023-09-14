@@ -15,8 +15,9 @@ services:
       - elk
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
-    sysctls:
-      - vm.max_map_count=262144
+    # use fix.sh
+    # sysctls:
+    #   - vm.max_map_count=262144
     restart: always
     healthcheck:
       start_period: 15s
