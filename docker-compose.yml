@@ -71,7 +71,8 @@ services:
     environment:
       ERRORLOG: /var/log/nginx/error.log
       PORT: 65432
-      BACKEND: http://127.0.0.1:5601
+      BACKEND: http://localhost:5601
+      PROXY_PRESERVE_HOST: off
     network_mode: host
     restart: always
 
