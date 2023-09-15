@@ -82,7 +82,9 @@ services:
       ctf-gateway-elasticsearch:
         condition: service_healthy
       ctf-gateway-logstash:
+        condition: service_started
       ctf-gateway-nginx:
+        condition: service_started
     volumes:
       - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml
       - ./nginx/log:/var/log/nginx
