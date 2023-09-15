@@ -98,9 +98,19 @@ services:
       - "ctf-gateway-kibana:kibana"
     restart: always
 
+  ctf-gateway-portainer:
+    image: portainer/portainer-ce
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+
 networks:
   elk:
     driver: bridge
 
 volumes:
   elasticsearch:
+  portainer_data:
