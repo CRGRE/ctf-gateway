@@ -71,11 +71,10 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    network_mode: host
     restart: always
 
-  filebeat:
+  ctf-gateway-filebeat:
     image: docker.elastic.co/beats/filebeat:${ELK_VERSION:-8.10.0}
     entrypoint: "filebeat -e -strict.perms=false"
     depends_on:
