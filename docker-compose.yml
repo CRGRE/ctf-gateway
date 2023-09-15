@@ -64,13 +64,14 @@ services:
     restart: always
 
   ctf-gateway-nginx:
-    image: nginx:alpine
+    image: owasp/modsecurity-crs:nginx
     volumes:
       - ./nginx/config:/etc/nginx/conf.d
       - ./nginx/log:/var/log/nginx
-    # ports:
-    #   - "80:80"
-    #   - "443:443"
+    environment:
+      ERRORLOG: /var/log/nginx/error.log
+      PORT: 65432
+      BACKEND: http://127.0.0.1:5601
     network_mode: host
     restart: always
 
