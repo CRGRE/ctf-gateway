@@ -6,7 +6,7 @@ filebeat.inputs:
 
 output.logstash:
   enabled: true
-  hosts: ["ctf-gateway-logstash:5044"]
+  hosts: ["logstash:5044"]
   # FIXME: Cannot reach the hosts of Logstash
 
 # output.elasticsearch:
@@ -14,6 +14,6 @@ output.logstash:
 #   username: "elastic"
 #   password: "changeme"
 setup.kibana:
-  host: "http://ctf-gateway-kibana:5601"
+  host: "http://kibana:5601"
   username: "elastic"
   password: "CTF_34765938475_Password"
