@@ -73,8 +73,7 @@ services:
     environment:
       ERRORLOG: /var/log/nginx/error.log
       PORT: 65432
-      BACKEND: http://localhost:8000
-      PROXY_PRESERVE_HOST: off
+      BACKEND: http://localhost:1000
     network_mode: host
     restart: always
 
@@ -96,15 +95,6 @@ services:
     links: 
       - "ctf-gateway-logstash:logstash"
       - "ctf-gateway-kibana:kibana"
-    restart: always
-
-  ctf-gateway-portainer:
-    image: portainer/portainer-ce
-    ports:
-      - "127.0.0.1:8000:8000"
-    volumes:
-      - portainer_data:/data
-      - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: always
 
 networks:
