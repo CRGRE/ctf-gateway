@@ -51,7 +51,7 @@ services:
       ctf-gateway-elasticsearch:
         condition: service_healthy
     ports:
-      - "61111:5601"
+      - "localhost:5601:5601"
     environment:
       SERVER_NAME: ctf-gateway-kibana
       SERVER_HOST: "0.0.0.0"
@@ -68,9 +68,9 @@ services:
     volumes:
       - ./nginx/config:/etc/nginx/conf.d
       - ./nginx/log:/var/log/nginx
-    ports:
-      - "80:80"
-      - "443:443"
+    # ports:
+    #   - "80:80"
+    #   - "443:443"
     network_mode: host
     restart: always
 
