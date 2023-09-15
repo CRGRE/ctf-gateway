@@ -68,6 +68,8 @@ services:
     volumes:
       - ./nginx/config:/etc/nginx/conf.d
       - ./nginx/log:/var/log/nginx
+      # disable numerical host blocks
+      - /dev/null:/etc/modsecurity.d/owasp-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf
     environment:
       ERRORLOG: /var/log/nginx/error.log
       PORT: 65432
