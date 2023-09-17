@@ -69,3 +69,8 @@ passwd ctf
 mkdir /opt/ctf
 cp -R ~/.ssh /opt/ctf/.ssh
 chown -R ctf:ctf /opt/ctf
+
+git clone https://github.com/CRGRE/ctf-gateway
+cd ctf-gateway
+# setup
+docker compose up -d && docker compose logs -f
