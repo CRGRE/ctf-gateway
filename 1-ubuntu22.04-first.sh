@@ -98,8 +98,8 @@ docker compose up -d && docker compose logs -f
 
 
 # after inspection
+# 
 ufw allow 22
-ufw allow 22
-ufw allow 22
-ufw allow 22
+ufw allow 7000
+ufw allow 5050
 ufw allow from 203.0.113.103/24 proto tcp to any port 63964
