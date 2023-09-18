@@ -92,7 +92,7 @@ services:
         condition: service_started
     volumes:
       - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-      - ./filebeat/custom-dashboards/:/usr/share/filebeat/kibana/custom-dashboards:ro
+      - ./filebeat/kibana/:/usr/share/filebeat/kibana/:ro
       - ./nginx/log:/var/log/nginx
     networks:
       - elk
