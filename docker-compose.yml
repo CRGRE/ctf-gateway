@@ -100,6 +100,26 @@ services:
       - "ctf-gateway-kibana:kibana"
     restart: always
 
+  # ctf-gateway-metricbeat:
+  #   image: docker.elastic.co/beats/metricbeat:8.9.2
+  #   entrypoint: "filebeat -e -strict.perms=false"
+  #   depends_on:
+  #     ctf-gateway-elasticsearch:
+  #       condition: service_healthy
+  #     ctf-gateway-logstash:
+  #       condition: service_started
+  #     ctf-gateway-nginx:
+  #       condition: service_started
+  #   volumes:
+  #     - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml
+  #     - ./nginx/log:/var/log/nginx
+  #   networks:
+  #     - elk
+  #   links: 
+  #     - "ctf-gateway-logstash:logstash"
+  #     - "ctf-gateway-kibana:kibana"
+  #   restart: always
+
 networks:
   elk:
     driver: bridge
