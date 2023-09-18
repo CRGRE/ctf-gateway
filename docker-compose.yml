@@ -73,6 +73,7 @@ services:
       # disable numerical host blocks
       # - /dev/null:/etc/modsecurity.d/owasp-crs/rules/REQUEST-920-PROTOCOL-ENFORCEMENT.conf
     environment:
+      ACCESSLOG: /var/log/nginx/access.json
       ERRORLOG: /var/log/nginx/error.log
       PORT: 65432
       BACKEND: http://127.0.0.1:1111
