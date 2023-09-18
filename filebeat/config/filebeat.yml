@@ -1,8 +1,8 @@
 filebeat.inputs:
   - type: log
     paths:
-      - /var/log/nginx/*.json
-    tags: ["nginx", "json"]
+      - /var/log/nginx/access.json
+    tags: ["nginx", "access", "json"]
     json:
       keys_under_root: true
       add_error_key: true
@@ -16,5 +16,6 @@ setup:
     host: "http://kibana:5601"
     username: "elastic"
     password: "CTF_34765938475_Password"
-  dashboards:
-    directory: /usr/share/filebeat/kibana/
+  # not working need to prepare exported index pattern
+  # dashboards:
+  #   directory: /usr/share/filebeat/kibana/ 
