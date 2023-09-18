@@ -1,0 +1,7 @@
+# The "combined" log format is predefined
+log_format logger-json escape=json '{"source": "ctf-gateway-nginx", "time": $msec, "resp_body_size": $body_bytes_sent, "host": "$http_host", "server_port": "$server_port", "address": "$remote_addr", "request_length": $request_length, "method": "$request_method", "uri": "$request_uri", "status": $status,  "user_agent": "$http_user_agent", "resp_time": $request_time, "upstream_addr": "$upstream_addr"}';
+
+access_log ${ACCESSLOG} logger-json;
+access_log ${METRICSLOG} combined;
+
+error_log ${ERRORLOG} ${LOGLEVEL};
