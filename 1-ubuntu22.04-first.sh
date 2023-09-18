@@ -80,15 +80,26 @@ chown -R ctf:ctf /opt/ctf
 
 
 # scp -P 61011 C:\Users\petch\Downloads\images-dump.zip ctf@185.250.149.127:~
-mkdir images-dump
-cd images-dump
+mkdir ~/images-dump
+cd ~/images-dump
 unzip ../images-dump.zip
 for tar in $(ls); do
     docker load -i $tar
 done
-cd ~
+# docker tag 39978a50f615 docker.elastic.co/logstash/logstash:8.10.0
 
+cd ~
 git clone https://github.com/CRGRE/ctf-gateway
 cd ctf-gateway
 # setup
 docker compose up -d && docker compose logs -f
+
+
+
+
+# after inspection
+ufw allow 22
+ufw allow 22
+ufw allow 22
+ufw allow 22
+ufw allow from 203.0.113.103/24 proto tcp to any port 63964
