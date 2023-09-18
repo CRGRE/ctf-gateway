@@ -101,25 +101,28 @@ services:
       - "ctf-gateway-kibana:kibana"
     restart: always
 
-  # ctf-gateway-metricbeat:
-  #   image: docker.elastic.co/beats/metricbeat:8.9.2
-  #   entrypoint: "filebeat -e -strict.perms=false"
-  #   depends_on:
-  #     ctf-gateway-elasticsearch:
-  #       condition: service_healthy
-  #     ctf-gateway-logstash:
-  #       condition: service_started
-  #     ctf-gateway-nginx:
-  #       condition: service_started
-  #   volumes:
-  #     - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml
-  #     - ./nginx/log:/var/log/nginx
-  #   networks:
-  #     - elk
-  #   links: 
-  #     - "ctf-gateway-logstash:logstash"
-  #     - "ctf-gateway-kibana:kibana"
-  #   restart: always
+  ctf-gateway-metricbeat:
+    image: docker.elastic.co/beats/metricbeat:8.9.2
+    entrypoint: "metricbeat -e"
+    depends_on:
+      ctf-gateway-elasticsearch:
+        condition: service_healthy
+    user: root
+    environment:
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: ${ELK_PASSWORD:-changeme}
+    volumes:
+      - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+    networks:
+      - elk
+    links: 
+      - "ctf-gateway-elasticsearch:elasticsearch"
+      - "ctf-gateway-kibana:kibana"
+    restart: always
 
 networks:
   elk:
