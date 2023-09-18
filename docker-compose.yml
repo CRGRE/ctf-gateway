@@ -103,7 +103,7 @@ services:
 
   ctf-gateway-metricbeat:
     image: docker.elastic.co/beats/metricbeat:${ELK_VERSION:-8.10.0}
-    entrypoint: "metricbeat -e"
+    entrypoint: "metricbeat -e --strict.perms=false"
     depends_on:
       ctf-gateway-elasticsearch:
         condition: service_healthy
