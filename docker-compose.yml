@@ -91,8 +91,8 @@ services:
       ctf-gateway-nginx:
         condition: service_started
     volumes:
-      - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - ./filebeat/ctf-gateway-kibana-dashboard.json.zip:/usr/share/filebeat/kibana/ctf-gateway-kibana-dashboard.json.zip
+      - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./filebeat/custom-dashboards/:/usr/share/filebeat/kibana/custom-dashboards:ro
       - ./nginx/log:/var/log/nginx
     networks:
       - elk

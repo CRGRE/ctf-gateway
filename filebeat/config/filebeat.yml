@@ -17,5 +17,4 @@ setup:
     username: "elastic"
     password: "CTF_34765938475_Password"
   dashboards:
-    enabled: true
-    file: /usr/share/filebeat/kibana/ctf-gateway-kibana-dashboard.json.zip
+    directory: /usr/share/filebeat/kibana/custom-dashboards
