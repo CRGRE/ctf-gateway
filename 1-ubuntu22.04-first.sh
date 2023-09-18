@@ -25,7 +25,7 @@ systemctl restart sshd
 # check
 
 
-apt install mc nano git netcat nmap curl sudo sqlite -y
+apt install mc nano git netcat nmap curl sudo sqlite net-tools -y
 
 
 # https://www.digitalocean.com/community/tutorials/how-to-set-up-an-endlessh-tarpit-on-ubuntu-22-04
@@ -102,4 +102,8 @@ docker compose up -d && docker compose logs -f
 ufw allow 22
 ufw allow 7000
 ufw allow 5050
+ufw allow 4000
 ufw allow from 203.0.113.103/24 proto tcp to any port 63964
+ufw allow from 203.0.113.103/24 proto tcp to any port 57000
+ufw allow from 203.0.113.103/24 proto tcp to any port 55050
+ufw allow from 203.0.113.103/24 proto tcp to any port 54000
