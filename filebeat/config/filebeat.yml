@@ -1,11 +1,11 @@
 filebeat.inputs:
-- type: log
-  paths:
-    - /var/log/nginx/*.json
-  tags: ["nginx", "json"]
-  json:
-    keys_under_root: true
-    add_error_key: true
+  - type: log
+    paths:
+      - /var/log/nginx/*.json
+    tags: ["nginx", "json"]
+    json:
+      keys_under_root: true
+      add_error_key: true
 
 output.logstash:
   enabled: true
@@ -18,3 +18,4 @@ setup:
     password: "CTF_34765938475_Password"
   dashboards:
     enabled: true
+    file: /usr/share/filebeat/kibana/ctf-gateway-kibana-dashboard.json.zip
